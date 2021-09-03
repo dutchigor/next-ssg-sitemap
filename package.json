@@ -11,6 +11,8 @@
     "Static Site Generator"
   ],
   "author": "Igor Honhoff",
+  "repository": "github:dutchigor/next-ssg-sitemap",
+  "private": false,
   "license": "MIT",
   "dependencies": {
     "sitemap": "^7.0.0"
