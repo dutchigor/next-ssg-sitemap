@@ -11,7 +11,7 @@ const defaultOptions = {
     }
   },
   // Default values for the generate function
-  exclude: ['404.html', '500.html'],
+  exclude: ['404', '500'],
   sitemapLoc: path.join('public', 'sitemap.xml'),
   buildDir: '.next',
 }
@@ -48,25 +48,28 @@ export default async function generate(projectPath, baseUrl, { processPath, excl
         const subPage = urlPath + entry.name + '/'
         await crawlFolder(subFolder, subPage)
 
-      } else if (path.extname(entry.name) === '.html' && !exclude.includes(urlPath + entry.name)) {
+      } else if (path.extname(entry.name) === '.html') {
         // Add each html file to the sitemap if it is not explicitly excluded.
-        // Create base object to map to url element object.
         const basename = path.basename(entry.name, '.html')
-        const siteLink = {
-          url: cleanUrl.href + urlPath + basename,
-          path: folder + entry.name
-        }
+        if (!exclude.includes(urlPath + basename)) {
+          // Create base object to map to url element object.
+          const siteLink = {
+            url: cleanUrl.href + urlPath + basename,
+            path: urlPath + basename
+          }
 
-        // If a json file exists with the same name as the html file, import the file as props
-        const propsFile = path.join(folder, basename + '.json')
-        if (existsSync(propsFile)) {
-          const propsString = readFileSync(propsFile, "utf8")
-          const props = JSON.parse(propsString).pageProps
-          siteLink.props = props
-        }
+          // If a json file exists with the same name as the html file, import the file as props
+          const propsFile = path.join(folder, basename + '.json')
+          if (existsSync(propsFile)) {
+            const propsString = readFileSync(propsFile, "utf8")
+            const props = JSON.parse(propsString).pageProps
+            siteLink.props = props
+          }
 
-        // Process the siteLink object with the provided mapping function and save the result to the sitemap.
-        smStream.write(await processPath(siteLink))
+          // Process the siteLink object with the provided mapping function and save the result to the sitemap.
+          const urlEl = await processPath(siteLink)
+          if (urlEl) smStream.write()
+        }
       }
     }
   }
