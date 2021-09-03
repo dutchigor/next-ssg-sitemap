@@ -68,7 +68,7 @@ export default async function generate(projectPath, baseUrl, { processPath, excl
 
           // Process the siteLink object with the provided mapping function and save the result to the sitemap.
           const urlEl = await processPath(siteLink)
-          if (urlEl) smStream.write()
+          if (urlEl) smStream.write(urlEl)
         }
       }
     }
