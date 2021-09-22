@@ -18,6 +18,6 @@
     "sitemap": "^7.0.0"
   },
   "peerDependencies": {
-    "next": "^11.0.0"
+    "next": "^11.x"
   }
 }
