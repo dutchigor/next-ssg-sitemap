@@ -1,8 +1,18 @@
 # Next.js Sitemap Generator for Statically Generated Sites
 
 <!-- Badges -->
+<!-- TOC depthfrom:2 -->
 
-<!-- TOC -->
+* [Introduction](#introduction)
+* [Installation](#installation)
+* [Usage](#usage)
+  * [Create a module](#create-a-module)
+  * [Add module to export script](#add-module-to-export-script)
+* [Contributing](#contributing)
+* [License](#license)
+* [Contact](#contact)
+
+<!-- /TOC -->
 
 ## Introduction
 
@@ -25,7 +35,7 @@ Setting this up requires the following steps:
 1. Add module to export script in package.json
 
 ### Create a module
-Call the generate function, which is the default export from next-ssg-sitemap in a seperate module. This function generates the sitemap based on your input. Most notably, you can provide a function to transform the props into a SitemapItem object understood by sitemap.js to output the desired url child elements.
+Call the generate function, which is the default export from next-ssg-sitemap in a separate module. This function generates the sitemap based on your input. Most notably, you can provide a function to transform the props into a SitemapItem object understood by sitemap.js to output the desired url child elements.
 
 #### Generate function API
 The function generates the sitemap as an xml file and does not return anything. It accepts the following parameters:
@@ -33,12 +43,12 @@ The function generates the sitemap as an xml file and does not return anything. 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | projectPath | <code>String</code> |  | Path to the base folder of the Next.js project |
-| baseUrl | <code>String</code> |  | Root of the public URL where the project will be hosted. |
+| baseUrl | <code>String</code> |  | Root of the public URL where the project will be hosted |
 | options | <code>Object</code> |  |  |
 | [options.processPath] | [<code>processPage</code>](#processPage) |  | Callback to create the input object for a url element. Returns just the url by default |
 | [options.exclude] | <code>Array.&lt;String&gt;</code> | <code>[&#x27;404&#x27;, &#x27;500&#x27;]</code> | List of page paths to exclude from the sitemap |
 | [options.sitemapLoc] | <code>String</code> | <code>public/sitemap.xml</code> | The filename and location where to store the sitemap |
-| [buildDir] | <code>String</code> | <code>.next</code> | The folder where the built Next project can be found |
+| [options.buildDir] | <code>String</code> | <code>.next</code> | The folder where the built Next project can be found |
 
 <a name="processPage"></a>
 #### ProcessPage callback API

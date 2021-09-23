@@ -36,15 +36,15 @@ const defaultOptions = {
  * @function generate
  * Create the sitemap xml using the Next.js build as a template. Provide the page props to customise the url child elements.
  * @param {String} projectPath Path to the base folder of the Next.js project
- * @param {String} baseUrl Root of the public URL where the project will be hosted. 
+ * @param {String} baseUrl Root of the public URL where the project will be hosted 
  * @param {Object} options
  * @param {processPage} [options.processPath] Callback to create the input object for a url element. Returns just the url by default
  * @param {String[]} [options.exclude=['404', '500']] List of page paths to exclude from the sitemap
  * @param {String} [options.sitemapLoc=public/sitemap.xml] The filename and location where to store the sitemap
- * @param {String} [buildDir=.next] The folder where the built Next project can be found
+ * @param {String} [options.buildDir=.next] The folder where the built Next project can be found
  */
 export default async function generate(projectPath, baseUrl, { processPath, exclude, sitemapLoc, buildDir }) {
-  // Check that the Next.js project has been built out.
+  // Check that the Next.js project has been built out
   if (!existsSync(path.join(projectPath, '.next', 'BUILD_ID'))) {
     throw new Error(`${projectPath} does not contain a valid build folder. Run "next build" before executing this script.`)
   }
@@ -60,10 +60,10 @@ export default async function generate(projectPath, baseUrl, { processPath, excl
   const smStream = new SitemapStream({ hostname: cleanUrl.href })
   smStream.pipe(createWriteStream(path.join(projectPath, sitemapLoc)))
 
-  // Add all files in folder and subfolders to the sitemap.
+  // Add all files in folder and subfolders to the sitemap
   async function crawlFolder(folder, urlPath) {
 
-    // Process each file in the folder.
+    // Process each file in the folder
     const files = readdirSync(folder, { withFileTypes: true })
     for (const entry of files) {
       if (entry.isDirectory()) {
@@ -73,10 +73,10 @@ export default async function generate(projectPath, baseUrl, { processPath, excl
         await crawlFolder(subFolder, subPage)
 
       } else if (path.extname(entry.name) === '.html') {
-        // Add each html file to the sitemap if it is not explicitly excluded.
+        // Add each html file to the sitemap if it is not explicitly excluded
         const basename = path.basename(entry.name, '.html')
         if (!exclude.includes(urlPath + basename)) {
-          // Create base object to map to url element object.
+          // Create base object to map to url element object
           const pageDetails = {
             url: cleanUrl.href + urlPath + basename,
             path: urlPath + basename
@@ -92,7 +92,7 @@ export default async function generate(projectPath, baseUrl, { processPath, excl
             pageDetails.props = {}
           }
 
-          // Process the siteLink object with the provided mapping function and save the result to the sitemap.
+          // Process the siteLink object with the provided mapping function and save the result to the sitemap
           const urlEl = await processPath(pageDetails)
           if (urlEl) smStream.write(urlEl)
         }
@@ -100,14 +100,14 @@ export default async function generate(projectPath, baseUrl, { processPath, excl
     }
   }
 
-  // Set and validate the base folder where the static site can be found.
+  // Set and validate the base folder where the static site can be found
   const pagesPath = path.join(projectPath, buildDir, 'server', 'pages')
   if (!existsSync(pagesPath)) throw new Error(`${projectPath} does not contain any valid pages.`)
 
   // Start crawling the static site folder
   await crawlFolder(pagesPath, '')
 
-  // Finalise saving the sitemap xml.
+  // Finalise saving the sitemap xml
   try {
     smStream.end()
   } catch (error) {
