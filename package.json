@@ -1,6 +1,6 @@
 {
   "name": "next-ssg-sitemap",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A sitemap generator for statically generated sites created with Netlify. Includes support for dynamic paths generated at build time.",
   "type": "module",
   "main": "index.js",
