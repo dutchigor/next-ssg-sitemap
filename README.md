@@ -1,3 +1,7 @@
+# Deprecated!
+
+This project is no longer maintained. I recommend using [next-sitemap](https://github.com/iamvishnusankar/next-sitemap) instead.
+
 # Next.js Sitemap Generator for Statically Generated Sites
 
 <!-- Badges -->
